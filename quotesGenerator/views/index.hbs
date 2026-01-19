@@ -1,0 +1,16 @@
+<h1>Famous Quotes</h1>
+<blockquote>
+  <p id="quoteBody">Fetching...</p>
+  <footer id="quoteAuthor"></footer>
+</blockquote>
+<script>
+  //ensure the page is loaded
+  $(document).ready(function(){
+    //send a get request to get random quote once page loads
+    jQuery.getJSON('https://talaikis.com/api/quotes/random', function(data){
+      //update the view with the quote
+      $('#quoteBody').text(data.quote)
+      $('#quoteAuthor').text(data.author)
+    })
+  })
+</script>

@@ -16,26 +16,49 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//required for passport to maintain user state/data
+app.use(
+  session({
+    secret: 'APP_SECRET',
+    resave: true,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize()) //initialize passport
+app.use(passport.session()); //persistent login sessions
+app.listen(flash()); //use connect-flash for flash messages stored in session
+app.use(express.static(path.join(__dirname, 'public'))); //set static files / assets directory
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// catch 404 and forward to error handler
+// handle authentication failure error messages
 app.use(function(req, res, next) {
-  next(createError(404));
+  if (req && req.query && req.query.error) {
+    req.flash("error", req.query.error);
+  }
+
+  if (req && req.query && req.query.error_description) {
+    req.flash("error_description", req.query.error_description);
+  }
+  next();
 });
 
-// error handler
+// check logged in
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.locals.loggedIn = false;
+  if (req.session.passport && typeof req.session.passport.user != 'undefined') {
+    res.locals.loggedIn = true;
+  }
+  next();
 });
 
 module.exports = app;
+
+//require the modules
+const passport = require('passport');
+const session = require('express-session');
+const flash = require('connect-flash');
+
+//hbs set up for templating
+app.set('view engine', 'hbs');
