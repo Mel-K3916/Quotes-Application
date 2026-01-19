@@ -1,11 +1,12 @@
-<h1>Famous Quotes</h1>
-<div style="background: #f4f4f4; padding: 20px; border-radius: 8px; border-left: 10px solid #007bff;">
-  <blockquote style="font-size: 1.5rem; margin: 0;">
-    <p>"{{quote}}"</p>
-    <footer style="color: #666;">— <strong>{{author}}</strong></footer>
-  </blockquote>
-</div>
+<h1>{{title}}</h1>
 
-<div style="margin-top: 20px;">
-  <a href="/" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">Get New Quote</a>
-</div>
+{{#if isAuthenticated}}
+  <p>Welcome! <a href="/logout">Logout</a></p>
+  
+  <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; margin-top: 20px;">
+    <p style="font-size: 1.5rem; font-style: italic;">"{{quote}}"</p>
+    <p style="font-weight: bold;">— {{author}}</p>
+  </div>
+{{else}}
+  <p>Please <a href="/login">Log In</a> to see the quote of the day.</p>
+{{/if}}
