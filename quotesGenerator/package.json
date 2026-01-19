@@ -6,10 +6,12 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "axios": "^1.13.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "express": "~4.16.1",
+    "express": "^5.2.1",
+    "express-openid-connect": "^2.19.4",
     "express-session": "^1.18.2",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",
