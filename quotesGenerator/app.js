@@ -3,6 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
+var passport = require('passport');
+var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -11,11 +14,12 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'hbs'); //change to jade/hbs as per file extension
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 //required for passport to maintain user state/data
 app.use(
   session({
@@ -26,7 +30,7 @@ app.use(
 );
 app.use(passport.initialize()) //initialize passport
 app.use(passport.session()); //persistent login sessions
-app.listen(flash()); //use connect-flash for flash messages stored in session
+app.use(flash()); //use connect-flash for flash messages stored in session
 app.use(express.static(path.join(__dirname, 'public'))); //set static files / assets directory
 
 app.use('/', indexRouter);
@@ -54,11 +58,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
-
-//require the modules
-const passport = require('passport');
-const session = require('express-session');
-const flash = require('connect-flash');
 
 //hbs set up for templating
 app.set('view engine', 'hbs');
