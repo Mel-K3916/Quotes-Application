@@ -1,13 +1,26 @@
-<div class="col-sm-4 col-sm-offset-4" style="margin-top: 100px">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h2>Short Bio</h2>
-        </div>
-        <div class="panel-body">
-            <img src="{{user.picture}}" class="img-circle img-responsive" alt="profile-pic"/>
-            <h2>Name: <span> {{user.displayName}} </span></h2>
-            <h2>Nickname: <span> {{user.nickname }}</span></h2>
-            <h2>Gender: <span> {{user.gender}} </span></h2>
-        </div>
-    </div>
+<style>
+    .profile-card {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        background: white;
+    }
+
+    .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #0077bff;
+    }
+</style>
+
+<div class="profile-card">
+    <img src="{{userProfile.picture}}" class="profile-img">
+    <h2>{{userProfile.name}}</h2>
+    <p style="color: #666;">{{userProfile.email}}</p>
+    <hr>
+    <a href="/" style="color: #007bff text-decoration: none;">← Back to Quotes</a>
 </div>

@@ -6,8 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var hbs = require('hbs');
 
-const { auth } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 
 const config = {
   authRequired: false,
@@ -41,6 +42,13 @@ app.use(function(req, res, next){
   next();
 });
 
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.render('profile', {
+    title: 'Your Profile',
+    userProfile: req.oidc.user
+  });
+});
+
 // Routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -56,6 +64,10 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
+});
+
+hbs.registerHelper('json', function(context) {
+  return JSON.stringify(context, null, 2);
 });
 
 module.exports = app;
